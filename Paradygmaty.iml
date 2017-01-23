@@ -19,5 +19,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="scala-sdk-2.12.1" level="project" />
+    <orderEntry type="library" name="akka" level="project" />
   </component>
 </module>
