@@ -4,19 +4,11 @@ object Matrix {
   private def multiplyMatrix(matrix1: Array[Array[Int]], matrix2: Array[Array[Int]], matrix3: Array[Array[Int]]): Boolean = {
     if (matrix1(0).length == matrix2.length) {
       val tmp: Array[Thread] = new Array[Thread](matrix1.length)
-      var i: Int = 0
-      while (i < matrix1.length) {
+      for (i <- matrix1.indices) {
         tmp(i) = new Matrix.rowMultiplier(matrix1, matrix2, matrix3, i)
         tmp(i).start()
-        i += 1
       }
-      try {
-        var i: Int = 0
-        while (i < tmp.length) {
-          tmp(i).join()
-          i += 1
-        }
-      }
+      try for (i <- tmp.indices) tmp(i).join()
       catch { case e: InterruptedException => e.printStackTrace() }
       return true
     }
@@ -33,28 +25,17 @@ object Matrix {
 
   private class rowMultiplier(var matrix1: Array[Array[Int]], var matrix2: Array[Array[Int]], var resultMatrix: Array[Array[Int]], val row: Int) extends Thread {
     override def run {
-      var i: Int = 0
-      while (i < matrix2(0).length) {
-        var j: Int = 0
-        while (j < matrix1(0).length) {
+      for (i <- matrix2(0).indices)
+        for (j <- matrix1(0).indices)
           resultMatrix(row)(i) += (matrix1(row)(j) * matrix2(j)(i))
-          j += 1
-        }
-        i += 1
-      }
     }
   }
 
   private def print(arr: Array[Array[Int]]) {
-    var i: Int = 0
-    while (i < arr.length) {
-      var j: Int = 0
-      while (j < arr(i).length) {
+    for (i <- arr.indices) {
+      for (j <- arr(i).indices)
         System.out.print(arr(i)(j) + ", ")
-        j += 1
-      }
       System.out.print("\n")
-      i += 1
     }
   }
 }
